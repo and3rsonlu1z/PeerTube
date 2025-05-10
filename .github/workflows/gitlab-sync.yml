@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
       - uses: action-pack/gitlab-sync@v3
         with:
-          username: ${{ github.actor }}
-          url: https://gitlab.com/${{ github.repository }}.git
+          username: ${{ username }}
+          url: https://git.infraops.info/${{ repository }}.git
           # Personal access token from gitlab.com 
-          token: ${{ secrets.GITLAB_TOKEN }}
+          token: ${{ GITLAB_TOKEN }}
