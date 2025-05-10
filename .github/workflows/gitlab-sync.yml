@@ -13,6 +13,6 @@ jobs:
       - uses: action-pack/gitlab-sync@v3
         with:
           username: andersonr
-          url: https://git.infraops.info/andersonr/PeerTube-Fork.git
+          url: https://git.infraops.info/andersonr/PeerTube.git
           # Personal access token from gitlab.com 
-          token: glpat-VnQqreUnWgvZ1WQYKqVp
+          token: glpat-ryPLatqq-UNZWmV5gNwT
