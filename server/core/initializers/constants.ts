@@ -1057,6 +1057,7 @@ export const MEMOIZE_LENGTH = {
 export const totalCPUs = Math.max(cpus().length, 1)
 
 export const WORKER_THREADS = {
+  IDLE_TIMEOUT: 1000 * 10, // 10 seconds
   DOWNLOAD_IMAGE: {
     CONCURRENCY: 3,
     MAX_THREADS: 1
@@ -1367,7 +1368,7 @@ function buildVideoMimetypeExt () {
 
         // The standard video format used by many Sony and Panasonic HD camcorders.
         // It is also used for storing high definition video on Blu-ray discs.
-        'video/mp2t': '.mts',
+        'video/mp2t': [ '.mts', 'ts' ],
         'video/vnd.dlna.mpeg-tts': '.mts',
 
         'video/m2ts': '.m2ts',

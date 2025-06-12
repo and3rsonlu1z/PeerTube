@@ -44,7 +44,6 @@ type CommonUpdateForm =
 
     nsfwFlagViolent?: boolean
     nsfwFlagSex?: boolean
-    nsfwFlagShocking?: boolean
   }
 
 type LiveUpdateForm = Omit<LiveVideoUpdate, 'replaySettings'> & {
@@ -252,6 +251,7 @@ export class VideoEdit {
 
     this.common.name = options.name
     this.common.channelId = options.channelId
+    this.common.support = options.support
     this.metadata.isLive = isLive
 
     this.common.privacy = serverDefaults.publish.privacy
@@ -462,12 +462,6 @@ export class VideoEdit {
           : this.common.nsfwFlags & ~NSFWFlag.EXPLICIT_SEX
       }
 
-      if (values.nsfwFlagShocking !== undefined) {
-        this.common.nsfwFlags = values.nsfwFlagShocking
-          ? this.common.nsfwFlags | NSFWFlag.SHOCKING_DISTURBING
-          : this.common.nsfwFlags & ~NSFWFlag.SHOCKING_DISTURBING
-      }
-
       if (values.nsfwFlagViolent !== undefined) {
         this.common.nsfwFlags = values.nsfwFlagViolent
           ? this.common.nsfwFlags | NSFWFlag.VIOLENT
@@ -532,7 +526,6 @@ export class VideoEdit {
 
       nsfw: this.common.nsfw,
       nsfwFlagSex: (this.common.nsfwFlags & NSFWFlag.EXPLICIT_SEX) === NSFWFlag.EXPLICIT_SEX,
-      nsfwFlagShocking: (this.common.nsfwFlags & NSFWFlag.SHOCKING_DISTURBING) === NSFWFlag.SHOCKING_DISTURBING,
       nsfwFlagViolent: (this.common.nsfwFlags & NSFWFlag.VIOLENT) === NSFWFlag.VIOLENT,
       nsfwSummary: this.common.nsfwSummary,
 

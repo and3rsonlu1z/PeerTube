@@ -227,6 +227,8 @@ object_storage:
   max_request_attempts: 3
 
   streaming_playlists:
+    # Bucket name created on your object storage provider
+    # PeerTube will access it via {bucket_name}.example.com
     bucket_name: 'streaming-playlists'
 
     # Allows setting all buckets to the same value but with a different prefix
@@ -530,6 +532,17 @@ webrtc:
   stun_servers:
     - 'stun:stunserver2024.stunprotocol.org'
     - 'stun:stun.framasoft.org'
+
+nsfw_flags_settings:
+  # Allow logged-in/anonymous users to have a more granular control over their NSFW policy
+  # using NSFW flags (violent content, etc.) set by video authors
+  enabled: true
+
+download_generate_video:
+  # Max parallel downloads on your instance
+  # Each download spawns an ffmpeg process
+  # The ffmpeg process ends when users have downloaded the entire file or cancelled the download
+  max_parallel_downloads: 100
 
 ###############################################################################
 #

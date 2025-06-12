@@ -43,9 +43,7 @@ export async function processMoveToObjectStorage (job: Job) {
 
       doAfterLastMove: video => {
         return doAfterLastVideoMove({ video, previousVideoState: payload.previousVideoState, isNewVideo: payload.isNewVideo })
-      },
-
-      moveToFailedState: moveToFailedMoveToObjectStorageState
+      }
     })
   } else if (isMoveCaptionPayload(payload)) { // Only caption file
     logger.info(`Moving video caption ${payload.captionId} to object storage in job ${job.id}.`, lTagsBase(payload.captionId))
@@ -122,8 +120,7 @@ async function moveCaptionFiles (captions: MVideoCaption[], hls: MStreamingPlayl
       caption.m3u8Url = await storeHLSFileFromContent({
         playlist: hls,
         pathOrFilename: caption.m3u8Filename,
-        content,
-        contentType: 'application/vnd.apple.mpegurl; charset=utf-8'
+        content
       })
 
       await caption.save()

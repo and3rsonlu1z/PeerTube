@@ -127,7 +127,7 @@ describe('Test video NSFW policy', function () {
         attributes: {
           name: 'nsfw sex',
           nsfw: true,
-          nsfwFlags: NSFWFlag.SHOCKING_DISTURBING | NSFWFlag.EXPLICIT_SEX,
+          nsfwFlags: NSFWFlag.VIOLENT | NSFWFlag.EXPLICIT_SEX,
           nsfwSummary: 'This is a shocking and disturbing video',
           category: 1
         }
@@ -140,7 +140,7 @@ describe('Test video NSFW policy', function () {
         const video = await server.videos.get({ id: uuid })
 
         expect(video.nsfw).to.be.true
-        expect(video.nsfwFlags).to.equal(6)
+        expect(video.nsfwFlags).to.equal(3)
         expect(video.nsfwSummary).to.equal('This is a shocking and disturbing video')
       }
     })
@@ -547,6 +547,34 @@ describe('Test video NSFW policy', function () {
 
         expect(data).to.have.lengthOf(5)
         expect(data.map(v => v.name)).to.have.members([ 'not nsfw', 'nsfw simple', 'nsfw sex', 'import violent', 'live violent' ])
+      }
+    })
+
+    it('Should disable NSFW flags policy', async function () {
+      await servers[0].users.updateMe({
+        token: userAccessToken,
+        nsfwPolicy: 'do_not_list',
+        nsfwFlagsHidden: NSFWFlag.EXPLICIT_SEX,
+        nsfwFlagsWarned: NSFWFlag.NONE,
+        nsfwFlagsBlurred: NSFWFlag.NONE,
+        nsfwFlagsDisplayed: NSFWFlag.VIOLENT
+      })
+
+      await servers[0].kill()
+      await servers[0].run({ nsfw_flags_settings: { enabled: false } })
+
+      const me = await servers[0].users.getMyInfo({ token: userAccessToken })
+      expect(me.nsfwPolicy).to.equal('do_not_list')
+      expect(me.nsfwFlagsHidden).to.equal(0)
+      expect(me.nsfwFlagsWarned).to.equal(0)
+      expect(me.nsfwFlagsBlurred).to.equal(0)
+      expect(me.nsfwFlagsDisplayed).to.equal(0)
+
+      for (const { total, data } of await getVideosFunctions(userAccessToken)) {
+        expect(total).to.equal(1)
+
+        expect(data).to.have.lengthOf(1)
+        expect(data.map(v => v.name)).to.have.members([ 'not nsfw' ])
       }
     })
   })

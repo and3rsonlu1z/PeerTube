@@ -19,7 +19,6 @@ type NSFWFlagPolicyType = NSFWPolicyType | 'default'
 type Form = {
   nsfwPolicy: FormControl<NSFWPolicyType>
   nsfwFlagViolent: FormControl<NSFWFlagPolicyType>
-  nsfwFlagShocking: FormControl<NSFWFlagPolicyType>
   nsfwFlagSex: FormControl<NSFWFlagPolicyType>
 
   p2pEnabled: FormControl<boolean>
@@ -64,12 +63,12 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
       label: $localize`Hide`
     },
     {
-      id: 'warn',
-      label: $localize`Warn`
-    },
-    {
       id: 'blur',
       label: $localize`Blur`
+    },
+    {
+      id: 'warn',
+      label: $localize`Warn`
     },
     {
       id: 'display',
@@ -87,12 +86,12 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
       label: $localize`Hide`
     },
     {
-      id: 'warn',
-      label: $localize`Warn`
-    },
-    {
       id: 'blur',
       label: $localize`Blur`
+    },
+    {
+      id: 'warn',
+      label: $localize`Warn`
     },
     {
       id: 'display',
@@ -117,7 +116,6 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
           this.form.patchValue({
             nsfwPolicy: this.user().nsfwPolicy || defaultNSFWPolicy,
             nsfwFlagViolent: this.buildNSFWFormFlag(NSFWFlag.VIOLENT),
-            nsfwFlagShocking: this.buildNSFWFormFlag(NSFWFlag.SHOCKING_DISTURBING),
             nsfwFlagSex: this.buildNSFWFormFlag(NSFWFlag.EXPLICIT_SEX),
 
             p2pEnabled: this.user().p2pEnabled,
@@ -139,7 +137,6 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
     const obj: BuildFormArgument = {
       nsfwPolicy: null,
       nsfwFlagViolent: null,
-      nsfwFlagShocking: null,
       nsfwFlagSex: null,
 
       p2pEnabled: null,
@@ -187,7 +184,6 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
 
     if (onlyKeys) {
       const hasNSFWFlags = onlyKeys.includes('nsfwFlagViolent') ||
-        onlyKeys.includes('nsfwFlagShocking') ||
         onlyKeys.includes('nsfwFlagSex')
 
       const onlyKeysWithNSFW = hasNSFWFlags
@@ -202,6 +198,10 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
     }
 
     return this.updateAnonymousProfile(details)
+  }
+
+  isNsfwFlagsEnabled () {
+    return this.serverService.getHTMLConfig().nsfwFlagsSettings.enabled
   }
 
   private handleReactiveUpdate () {
@@ -253,7 +253,6 @@ export class UserVideoSettingsComponent implements OnInit, OnDestroy {
     let result = NSFWFlag.NONE
 
     if (this.form.value.nsfwFlagViolent === type) result |= NSFWFlag.VIOLENT
-    if (this.form.value.nsfwFlagShocking === type) result |= NSFWFlag.SHOCKING_DISTURBING
     if (this.form.value.nsfwFlagSex === type) result |= NSFWFlag.EXPLICIT_SEX
 
     return result

@@ -54,16 +54,16 @@ describe('Publish video', () => {
 
       await videoPublishPage.refresh('scheduled')
 
-      // check if works? screenshot
       expect(videoPublishPage.getScheduleInput()).toBeDisplayed()
 
       const nextDay = new Date()
-      nextDay.setDate(nextDay.getDate() + 1)
+      nextDay.setDate(1)
+      nextDay.setMonth(nextDay.getMonth() + 1)
 
       const inputDate = new Date(await videoPublishPage.getScheduleInput().getValue())
-      expect(nextDay.getDate()).toEqual(inputDate.getDate())
-      expect(nextDay.getMonth()).toEqual(inputDate.getMonth())
-      expect(nextDay.getFullYear()).toEqual(inputDate.getFullYear())
+      expect(inputDate.getDate()).toEqual(nextDay.getDate())
+      expect(inputDate.getMonth()).toEqual(nextDay.getMonth())
+      expect(inputDate.getFullYear()).toEqual(nextDay.getFullYear())
     })
   })
 

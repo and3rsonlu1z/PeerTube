@@ -1,7 +1,7 @@
 <div class="channel-filters">
   <div class="channels-label" i18n>Per channel:</div>
 
-  @for (channel of channels; track channel) {
+  @for (channel of channels; track channel.id) {
     <my-channel-toggle [channel]="channel" [(ngModel)]="channel.selected" (ngModelChange)="onFilter()"></my-channel-toggle>
   }
 </div>
@@ -149,7 +149,7 @@
       </td>
 
       <td *ngIf="isSelected('playlists')">
-        <div class="badges">
+        <div class="badges playlists">
           <a *ngFor="let playlist of (videosContainedInPlaylists[video.id] || [])" class="pt-badge badge-secondary" [routerLink]="['/w/p/', playlist.playlistShortUUID]">
             {{ playlist.playlistDisplayName }}
           </a>
@@ -186,7 +186,8 @@
 
           <my-video-actions-dropdown
             placement="bottom auto" buttonDirection="horizontal" buttonStyled="true" [video]="video" [displayOptions]="videoActionsOptions"
-            (videoRemoved)="reloadData()" (videoFilesRemoved)="reloadData()" (transcodingCreated)="reloadData()"
+            [moreActions]="moreVideoActions"
+            (videoRemoved)="reloadData()" (videoFilesRemoved)="reloadData()" (transcodingCreated)="reloadData()" (videoExistsInPlaylistChange)="fetchVideosContainedInPlaylists([ video ])"
           ></my-video-actions-dropdown>
         </div>
       </td>

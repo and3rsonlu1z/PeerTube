@@ -100,20 +100,6 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label i18n for="licence">Licence</label>
-
-        <div class="form-group-description" i18n>
-          <a href="https://chooser-beta.creativecommons.org/" target="_blank" rel="noopener noreferrer">Choose</a> the appropriate licence for your work.
-        </div>
-
-        <my-select-options inputId="licence" [items]="videoLicences" formControlName="licence" clearable="true"></my-select-options>
-
-        <div *ngIf="formErrors.licence" class="form-error" role="alert">
-          {{ formErrors.licence }}
-        </div>
-      </div>
-
       <div *ngIf="passwordProtectionSelected" class="form-group">
         <label i18n for="videoPassword">Password</label>
         <my-input-text formControlName="videoPassword" inputId="videoPassword" [withCopy]="true" [formError]="formErrors['videoPassword']"></my-input-text>
@@ -130,6 +116,20 @@
 
       <div *ngIf="formErrors.schedulePublicationAt" class="form-error" role="alert">
         {{ formErrors.schedulePublicationAt }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label i18n for="licence">Licence</label>
+
+      <div class="form-group-description" i18n>
+        <a href="https://chooser-beta.creativecommons.org/" target="_blank" rel="noopener noreferrer">Choose</a> the appropriate licence for your work.
+      </div>
+
+      <my-select-options inputId="licence" [items]="videoLicences" formControlName="licence" clearable="true"></my-select-options>
+
+      <div *ngIf="formErrors.licence" class="form-error" role="alert">
+        {{ formErrors.licence }}
       </div>
     </div>
 
@@ -163,8 +163,14 @@
         <ng-container i18n>The video may be unplayable during the transcoding process. It's the reason why we prefer to publish publicly the video after transcoding.</ng-container>
       </ng-template>
     </my-peertube-checkbox>
+  </div>
+</div>
 
-    <div *ngIf="canBeDeleted()" class="form-group">
+<div *ngIf="canBeDeleted()">
+  <div class="danger-zone mt-5">
+    <h3 class="mb-3" i18n>DANGER ZONE</h3>
+
+    <div class="form-group">
       <label i18n for="deleteVideo">Delete your video</label>
       <div class="form-group-description" i18n>Warning: this is a definitive action!</div>
 
